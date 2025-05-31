@@ -14,7 +14,7 @@
     .channel-box img { width: 64px; height: 64px; object-fit: cover; border-radius: 50%; }
     .videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5em; margin-top: 2em; }
     .video-box { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1em; width: 50%;}
-    .video-box iframe { width: 100%; height: 200px; border: none; border-radius: 8px; }
+    .video-box iframe { width: 100%; height: auto; border: none; border-radius: 8px; }
   </style>  
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -167,7 +167,7 @@
           vbox.className = 'video-box';
           vbox.innerHTML = `
             <h4>${video.name}</h4>
-            <iframe width="100%" height="250px" src="${video.videoURL}" allowfullscreen></iframe>
+            <iframe  src="${video.videoURL}" allowfullscreen></iframe>
           `;
           videoContainer.appendChild(vbox);
         });
