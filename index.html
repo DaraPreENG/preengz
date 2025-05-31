@@ -112,8 +112,9 @@
   </header>
 
   <main>
-    <section class="channel-list" id="channelList"></section>
-    <section class="videos" id="videoList"></section>
+    <div id="videoList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <hr />
+    <div id="channelList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
   </main>
 
   <footer>
@@ -129,16 +130,16 @@
     });
   </script>
   <script>
-    const API_URL = 'https://script.google.com/macros/s/AKfycbyGOa8mygiNZ2-ekhql-PSj-d3j-iU_9knZAxLwHpni0WtzPO4gduNI3b4EVVcMvmku/exec';
+    const API_URL = 'https://script.google.com/macros/s/AKfycbygCYDy0OI2nWyp2V5vOm9h7P6OoGLxN3fS2ZTm-FJvVri-iFFM5g17z1s-Py2VNy6a/exec';
 
     fetch(API_URL)
       .then(res => res.json())
-      .then(channelData => {
+      .then(data => {
         const channelContainer = document.getElementById('channelList');
         const videoContainer = document.getElementById('videoList');
-
-        channelData.forEach(channel => {
-          // ช่อง
+    
+        // แสดง Channels
+        data.channels.forEach(channel => {
           const div = document.createElement('div');
           div.className = 'channel-box';
           div.innerHTML = `
@@ -151,22 +152,23 @@
             </a>
           `;
           channelContainer.appendChild(div);
-
-          // วิดีโอ
-          if (channel.video) {
-            const vbox = document.createElement('div');
-            vbox.className = 'video-box';
-            vbox.innerHTML = `
-              <h4>${channel.name}</h4>
-              <iframe src="${channel.video}" allowfullscreen></iframe>
-            `;
-            videoContainer.appendChild(vbox);
-          }
+        });
+    
+        // แสดง Videos
+        data.videos.forEach(video => {
+          const vbox = document.createElement('div');
+          vbox.className = 'video-box';
+          vbox.innerHTML = `
+            <h4>${video.name}</h4>
+            <iframe src="${video.videoURL}" allowfullscreen></iframe>
+          `;
+          videoContainer.appendChild(vbox);
         });
       })
       .catch(err => {
         console.error('Error loading data:', err);
       });
+
   </script>
 </body>
 </html>
