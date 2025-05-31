@@ -13,7 +13,7 @@
     .channel-box { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1em; width: 250px; text-align: center; }
     .channel-box img { width: 64px; height: 64px; object-fit: cover; border-radius: 50%; }
     .videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5em; margin-top: 2em; }
-    .video-box { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1em; }
+    .video-box { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1em; width: 30%;}
     .video-box iframe { width: 100%; height: 200px; border: none; border-radius: 8px; }
   </style>  
   <style>
@@ -90,21 +90,26 @@
         color: white;
       }
     }
+    #channelList {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px 0;
+  }
   </style>
 </head>
 <body>
 
   <header>
     <div class="logo">
-      <img src="https://via.placeholder.com/40" alt="Logo">
-      <h1>Pre-ENGR</h1>
+      <img src="https://dara-esc.pages.dev/assets/logo.png" alt="Logo">
     </div>
 
     <nav>
       <ul class="menu" id="menu">
         <li><a href="#home">หน้าแรก</a></li>
-        <li><a href="#channels">ช่อง YouTube</a></li>
-        <li><a href="#videos">วิดีโอล่าสุด</a></li>
+        <li><a href="#channelList">ช่อง YouTube</a></li>
+        <li><a href="#videoList">วิดีโอล่าสุด</a></li>
         <li><a href="#contact">ติดต่อ</a></li>
       </ul>
       <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
@@ -112,8 +117,10 @@
   </header>
 
   <main>
+    <h3>รายการ</h3>
     <div id="videoList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
-    <hr />
+    <hr style=" margin: 10px 0; border: 1px solid #444; ">
+    <h3>ช่อง</h3>
     <div id="channelList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
   </main>
 
@@ -160,7 +167,7 @@
           vbox.className = 'video-box';
           vbox.innerHTML = `
             <h4>${video.name}</h4>
-            <iframe src="${video.videoURL}" allowfullscreen></iframe>
+            <iframe width="100%" height="250px" src="${video.videoURL}" allowfullscreen></iframe>
           `;
           videoContainer.appendChild(vbox);
         });
