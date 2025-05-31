@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>ช่องเตรียมวิศวะ</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Kanit', sans-serif; background: #f4f4f4; }
+    header, footer { background: #2c3e50; color: white; padding: 1em; text-align: center; }
+    main { padding: 2em; }
+    .channel-list { display: flex; flex-wrap: wrap; gap: 1em; justify-content: center; }
+    .channel-box { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1em; width: 250px; text-align: center; }
+    .channel-box img { width: 64px; height: 64px; object-fit: cover; border-radius: 50%; }
+    .videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5em; margin-top: 2em; }
+    .video-box { background: white; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 1em; }
+    .video-box iframe { width: 100%; height: 200px; border: none; border-radius: 8px; }
+  </style>  
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    header {
+      background: #2c3e50;
+      color: white;
+      padding: 1em 2em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .logo img {
+      height: 40px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+    }
+
+    .menu {
+      list-style: none;
+      display: flex;
+      gap: 1.5em;
+    }
+
+    .menu li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .menu li a:hover {
+      color: #1abc9c;
+    }
+
+    .menu-toggle {
+      display: none;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .menu {
+        display: none;
+        flex-direction: column;
+        background: #34495e;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        width: 200px;
+        padding: 1em;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        z-index: 999;
+      }
+
+      .menu.show {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+        color: white;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">
+      <img src="https://via.placeholder.com/40" alt="Logo">
+      <h1>Pre-ENGR</h1>
+    </div>
+
+    <nav>
+      <ul class="menu" id="menu">
+        <li><a href="#home">หน้าแรก</a></li>
+        <li><a href="#channels">ช่อง YouTube</a></li>
+        <li><a href="#videos">วิดีโอล่าสุด</a></li>
+        <li><a href="#contact">ติดต่อ</a></li>
+      </ul>
+      <i class="fas fa-bars menu-toggle" id="menuToggle"></i>
+    </nav>
+  </header>
+
+  <main>
+    <section class="channel-list" id="channelList"></section>
+    <section class="videos" id="videoList"></section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 เตรียมวิศวะ</p>
+  </footer>
+  
+  <script>
+    const menu = document.getElementById('menu');
+    const toggle = document.getElementById('menuToggle');
+
+    toggle.addEventListener('click', () => {
+      menu.classList.toggle('show');
+    });
+  </script>
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbyGOa8mygiNZ2-ekhql-PSj-d3j-iU_9knZAxLwHpni0WtzPO4gduNI3b4EVVcMvmku/exec';
+
+    fetch(API_URL)
+      .then(res => res.json())
+      .then(channelData => {
+        const channelContainer = document.getElementById('channelList');
+        const videoContainer = document.getElementById('videoList');
+
+        channelData.forEach(channel => {
+          // ช่อง
+          const div = document.createElement('div');
+          div.className = 'channel-box';
+          div.innerHTML = `
+            <a href="${channel.link}" target="_blank" style="text-decoration:none; color:inherit;">
+              <img src="${channel.logo}" alt="${channel.name}" />
+              <h3>${channel.name}</h3>
+              ${channel.type === 'instagram'
+                ? '<i class="fab fa-instagram fa-2x"></i>'
+                : '<i class="fab fa-youtube fa-2x" style="color:red;"></i>'}
+            </a>
+          `;
+          channelContainer.appendChild(div);
+
+          // วิดีโอ
+          if (channel.video) {
+            const vbox = document.createElement('div');
+            vbox.className = 'video-box';
+            vbox.innerHTML = `
+              <h4>${channel.name}</h4>
+              <iframe src="${channel.video}" allowfullscreen></iframe>
+            `;
+            videoContainer.appendChild(vbox);
+          }
+        });
+      })
+      .catch(err => {
+        console.error('Error loading data:', err);
+      });
+  </script>
+</body>
+</html>
